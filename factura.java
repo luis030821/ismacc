@@ -1,11 +1,29 @@
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "factura")
 public class Factura {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_factura")
     private int idFactura;
+    
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE)
     private Date fecha;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
+    
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FacturaDetalle> detalles;
+
+    // Constructor, getters y setters
+    public Factura() {}
 
     public Factura(int idFactura, Date fecha, Cliente cliente, List<FacturaDetalle> detalles) {
         this.idFactura = idFactura;
